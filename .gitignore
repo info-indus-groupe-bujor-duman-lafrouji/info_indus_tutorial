@@ -1,0 +1,8 @@
+doc/sphinx/build/
+doc/sphinx/.venv/
+.venv/
+__pycache__/
+# ROS 2
+build/
+install/
+log/
