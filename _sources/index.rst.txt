@@ -10,3 +10,5 @@ sur un Raspberry Pi 5, et le documenter.
 .. toctree::
    :maxdepth: 2
    :caption: Sommaire
+
+   p00_pentographe/p50s00_index

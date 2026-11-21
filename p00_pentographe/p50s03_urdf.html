@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Génération de la description URDF du système 5 barres &mdash; Documentation Pantographe robotisé avec Raspberry Pi 5 et ROS 2 1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=3ddcd4e1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=a12a2fe1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="prev" title="Description mécanique de la plateforme système 5 barres" href="p50s02_mechanical_description.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pantographe robotisé avec Raspberry Pi 5 et ROS 2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sommaire</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="p50s00_index.html">Système 5 barres de dessin robotisé avec Raspberry Pi et ROS 2</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="p50s00_index.html#demarche-du-projet">Démarche du projet</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="p50s01_material_description.html">Description du matériel de la plateforme système 5 barres</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p50s02_mechanical_description.html">Description mécanique de la plateforme système 5 barres</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Génération de la description URDF du système 5 barres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pieces-de-l-assemblage">Pièces de l’assemblage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extraction-des-pieces-au-format-step">Extraction des pièces au format STEP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#conversion-des-pieces-au-format-collada">Conversion des pièces au format COLLADA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creation-du-fichier-urdf">Création du fichier URDF</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pantographe robotisé avec Raspberry Pi 5 et ROS 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="p50s00_index.html">Système 5 barres de dessin robotisé avec Raspberry Pi et ROS 2</a></li>
+      <li class="breadcrumb-item active">Génération de la description URDF du système 5 barres</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/p00_pentographe/p50s03_urdf.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="generation-de-la-description-urdf-du-systeme-5-barres">
+<span id="urdf"></span><h1>Génération de la description URDF du système 5 barres<a class="headerlink" href="#generation-de-la-description-urdf-du-systeme-5-barres" title="Lien vers cette rubrique"></a></h1>
+<p>Pour visualiser et simuler le système 5 barres avec ROS 2, nous avons besoin de le décrire
+dans un fichier URDF (<em>Unified Robot Description Format</em>) : la liste de ses pièces
+(<em>links</em>), des liaisons entre elles (<em>joints</em>) et de leurs modèles 3D.</p>
+<p>Nous partons du modèle 3D au format STEP conçu et réalisé par M. Olivier PICCIN.</p>
+<figure class="align-center" id="id1">
+<img alt="../_images/pantograph_step_model.png" src="../_images/pantograph_step_model.png" />
+<figcaption>
+<p><span class="caption-text">Modèle 3D de l’assemblage.</span><a class="headerlink" href="#id1" title="Lien vers cette image"></a></p>
+</figcaption>
+</figure>
+<section id="pieces-de-l-assemblage">
+<h2>Pièces de l’assemblage<a class="headerlink" href="#pieces-de-l-assemblage" title="Lien vers cette rubrique"></a></h2>
+<p>L’assemblage comporte cinq pièces principales. Dans l’URDF, nous leur donnons les noms suivants :</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pièce dans le modèle 3D</p></th>
+<th class="head"><p>Nom dans l’URDF</p></th>
+<th class="head"><p>Rôle</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>BATI_ASM</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">base</span></code></p></td>
+<td><p>le bâti, qui porte les deux moteurs</p></td>
+</tr>
+<tr class="row-odd"><td><p>LINK1_ASM</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">link1</span></code></p></td>
+<td><p>le bras gauche</p></td>
+</tr>
+<tr class="row-even"><td><p>LINK2_ASM</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">link2</span></code></p></td>
+<td><p>l’avant-bras gauche</p></td>
+</tr>
+<tr class="row-odd"><td><p>LINK3_ASM</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">link3</span></code></p></td>
+<td><p>l’avant-bras droit</p></td>
+</tr>
+<tr class="row-even"><td><p>LINK4_ASM</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">link4</span></code></p></td>
+<td><p>le bras droit</p></td>
+</tr>
+</tbody>
+</table>
+<p>Modèle complet : <a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/maquette-5-barres_asm.stp">maquette-5-barres_asm.stp</a></p>
+<p>L’outil de travail, le crayon, doit aussi apparaître dans l’URDF. Son support est fixé
+sur l’avant-bras gauche (<code class="docutils literal notranslate"><span class="pre">link2</span></code>) : c’est donc par rapport à cette pièce que nous le positionnons.</p>
+<p>Un fichier URDF utilise des modèles 3D au format COLLADA (extension <code class="docutils literal notranslate"><span class="pre">.dae</span></code>).
+Il faut donc découper l’assemblage STEP en cinq pièces, puis convertir chacune en COLLADA.</p>
+</section>
+<section id="extraction-des-pieces-au-format-step">
+<h2>Extraction des pièces au format STEP<a class="headerlink" href="#extraction-des-pieces-au-format-step" title="Lien vers cette rubrique"></a></h2>
+<p>Les pièces peuvent être extraites de l’assemblage avec le logiciel FreeCAD :</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/base.stp">base.stp</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/link1.stp">link1.stp</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/link2.stp">link2.stp</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/link3.stp">link3.stp</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/link4.stp">link4.stp</a></p></li>
+</ol>
+</section>
+<section id="conversion-des-pieces-au-format-collada">
+<h2>Conversion des pièces au format COLLADA<a class="headerlink" href="#conversion-des-pieces-au-format-collada" title="Lien vers cette rubrique"></a></h2>
+<p>La conversion en COLLADA peut également se faire avec FreeCAD :</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/base.dae">base.dae</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/link1.dae">link1.dae</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/link2.dae">link2.dae</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/link3.dae">link3.dae</a></p></li>
+<li><p><a class="reference external" href="https://github.com/yguel/informatique_industrielle_avec_ROS2/raw/rolling/doc/sphinx/source/p00_5_bars_system_pencil_holder_with_rpi_and_dynamixel/resources/cad/link4.dae">link4.dae</a></p></li>
+</ol>
+</section>
+<section id="creation-du-fichier-urdf">
+<h2>Création du fichier URDF<a class="headerlink" href="#creation-du-fichier-urdf" title="Lien vers cette rubrique"></a></h2>
+<p>Dans le fichier URDF, chaque modèle 3D est référencé par une balise <code class="docutils literal notranslate"><span class="pre">&lt;mesh&gt;</span></code>.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="p50s02_mechanical_description.html" class="btn btn-neutral float-left" title="Description mécanique de la plateforme système 5 barres" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Andreea BUJOR, Zilan DUMAN, Clément LAFROUJI.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
