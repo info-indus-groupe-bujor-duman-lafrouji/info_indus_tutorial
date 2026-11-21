@@ -1,19 +1,12 @@
-.. Dz_info_indus_tutorial documentation master file, created by
-   sphinx-quickstart on Fri Nov  6 15:33:04 2026.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+####################################################
+ Pantographe robotisé avec Raspberry Pi 5 et ROS 2
+####################################################
 
-Dz_info_indus_tutorial documentation
-====================================
-
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+Documentation du projet de travaux pratiques du cours
+`Informatique industrielle avec ROS2 <https://yguel.github.io/informatique_industrielle_avec_ROS2/>`_
+: faire fonctionner un pantographe (système 5 barres) avec ROS 2
+sur un Raspberry Pi 5, et le documenter.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
-
-   test
-
+   :caption: Sommaire
