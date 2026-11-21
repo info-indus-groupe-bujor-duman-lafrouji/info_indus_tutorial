@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modèles géométriques direct et inverse du système 5 barres &mdash; Documentation Pantographe robotisé avec Raspberry Pi 5 et ROS 2 1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=3ddcd4e1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=a12a2fe1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="prev" title="Génération de la description URDF du système 5 barres" href="p50s03_urdf.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pantographe robotisé avec Raspberry Pi 5 et ROS 2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sommaire</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="p50s00_index.html">Système 5 barres de dessin robotisé avec Raspberry Pi et ROS 2</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="p50s00_index.html#demarche-du-projet">Démarche du projet</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="p50s01_material_description.html">Description du matériel de la plateforme système 5 barres</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p50s02_mechanical_description.html">Description mécanique de la plateforme système 5 barres</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p50s03_urdf.html">Génération de la description URDF du système 5 barres</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Modèles géométriques direct et inverse du système 5 barres</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#notations">Notations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#outil-commun-l-intersection-de-deux-cercles">Outil commun : l’intersection de deux cercles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modele-geometrique-direct">Modèle géométrique direct</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modele-geometrique-inverse">Modèle géométrique inverse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#espace-de-travail">Espace de travail</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#singularites">Singularités</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#du-modele-aux-moteurs">Du modèle aux moteurs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#valeurs-numeriques">Valeurs numériques</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pantographe robotisé avec Raspberry Pi 5 et ROS 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="p50s00_index.html">Système 5 barres de dessin robotisé avec Raspberry Pi et ROS 2</a></li>
+      <li class="breadcrumb-item active">Modèles géométriques direct et inverse du système 5 barres</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/p00_pentographe/p50s04_kinematics.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="modeles-geometriques-direct-et-inverse-du-systeme-5-barres">
+<span id="kinematics"></span><h1>Modèles géométriques direct et inverse du système 5 barres<a class="headerlink" href="#modeles-geometriques-direct-et-inverse-du-systeme-5-barres" title="Lien vers cette rubrique"></a></h1>
+<p>Pour piloter le crayon, il faut savoir passer des angles des moteurs à la position du crayon
+(<strong>modèle géométrique direct</strong>, MGD), et surtout de la position voulue du crayon aux angles
+à donner aux moteurs (<strong>modèle géométrique inverse</strong>, MGI).
+Cette page établit ces deux modèles, puis décrit l’espace de travail et les singularités du mécanisme.</p>
+<section id="notations">
+<h2>Notations<a class="headerlink" href="#notations" title="Lien vers cette rubrique"></a></h2>
+<figure class="align-center" id="id1">
+<img alt="../_images/schema_cinematique.svg" src="../_images/schema_cinematique.svg" />
+<figcaption>
+<p><span class="caption-text">Schéma cinématique du système 5 barres et notations.</span><a class="headerlink" href="#id1" title="Lien vers cette image"></a></p>
+</figcaption>
+</figure>
+<p>Nous reprenons les notations du schéma cinématique :</p>
+<ul class="simple">
+<li><p>le repère <span class="math notranslate nohighlight">\((A_1, \vec{x}_0, \vec{y}_0)\)</span> a pour origine l’axe du moteur gauche,
+<span class="math notranslate nohighlight">\(\vec{x}_0\)</span> est dirigé vers l’axe du moteur droit, <span class="math notranslate nohighlight">\(\vec{y}_0\)</span> vers le haut ;</p></li>
+<li><p><span class="math notranslate nohighlight">\(A_1 = (0, 0)\)</span> et <span class="math notranslate nohighlight">\(A_5 = (l_0, 0)\)</span> sont les axes des deux moteurs ;</p></li>
+<li><p><span class="math notranslate nohighlight">\(l_1 = A_1A_2\)</span>, <span class="math notranslate nohighlight">\(l_2 = A_2A_3\)</span>, <span class="math notranslate nohighlight">\(l_3 = A_3A_4\)</span> et <span class="math notranslate nohighlight">\(l_4 = A_4A_5\)</span> sont les longueurs des barres,
+mesurées entre les centres des pivots ;</p></li>
+<li><p><span class="math notranslate nohighlight">\(q_1\)</span> est l’angle de <span class="math notranslate nohighlight">\(\overrightarrow{A_1A_2}\)</span> et <span class="math notranslate nohighlight">\(q_4\)</span> celui de <span class="math notranslate nohighlight">\(\overrightarrow{A_5A_4}\)</span> :
+ce sont les deux <strong>articulations actives</strong>, commandées par les moteurs ;</p></li>
+<li><p><span class="math notranslate nohighlight">\(q_2\)</span> est l’angle de <span class="math notranslate nohighlight">\(\overrightarrow{A_2A_3}\)</span> : c’est une articulation <strong>passive</strong>.</p></li>
+</ul>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Tous les angles sont <strong>absolus</strong> : ils sont mesurés depuis l’axe <span class="math notranslate nohighlight">\(\vec{x}_0\)</span>,
+dans le sens trigonométrique, et non entre deux barres voisines.</p>
+</div>
+<p>Le crayon n’est pas exactement en <span class="math notranslate nohighlight">\(A_3\)</span> : son support est fixé sur l’avant-bras gauche (<em>link2</em>).
+Nous notons <span class="math notranslate nohighlight">\(E\)</span> la pointe du crayon, décalée de <span class="math notranslate nohighlight">\(e_\parallel\)</span> dans la direction
+<span class="math notranslate nohighlight">\(\overrightarrow{A_2A_3}\)</span> et de <span class="math notranslate nohighlight">\(e_\perp\)</span> perpendiculairement à celle-ci.</p>
+</section>
+<section id="outil-commun-l-intersection-de-deux-cercles">
+<h2>Outil commun : l’intersection de deux cercles<a class="headerlink" href="#outil-commun-l-intersection-de-deux-cercles" title="Lien vers cette rubrique"></a></h2>
+<p>Les deux modèles reposent sur une seule opération : trouver le point <span class="math notranslate nohighlight">\(M\)</span> situé à la distance
+<span class="math notranslate nohighlight">\(r_1\)</span> d’un point <span class="math notranslate nohighlight">\(P\)</span> et à la distance <span class="math notranslate nohighlight">\(r_2\)</span> d’un point <span class="math notranslate nohighlight">\(Q\)</span>.
+On pose :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}d = \| Q - P \|, \qquad
+\vec{u} = \frac{Q - P}{d}, \qquad
+\vec{n} = \begin{pmatrix} -u_y \\ u_x \end{pmatrix}\end{split}\]</div>
+<p>où <span class="math notranslate nohighlight">\(\vec{n}\)</span> est <span class="math notranslate nohighlight">\(\vec{u}\)</span> tourné de <span class="math notranslate nohighlight">\(+90°\)</span>. Alors :</p>
+<div class="math notranslate nohighlight">
+\[a = \frac{r_1^2 - r_2^2 + d^2}{2d}, \qquad
+h = \sqrt{r_1^2 - a^2}, \qquad
+M = P + a\,\vec{u} \pm h\,\vec{n}\]</div>
+<p>Le signe <span class="math notranslate nohighlight">\(\pm\)</span> choisit l’une des deux solutions possibles : il correspond à une <strong>configuration</strong> du mécanisme.
+La solution n’existe que si <span class="math notranslate nohighlight">\(|r_1 - r_2| \le d \le r_1 + r_2\)</span>.</p>
+</section>
+<section id="modele-geometrique-direct">
+<h2>Modèle géométrique direct<a class="headerlink" href="#modele-geometrique-direct" title="Lien vers cette rubrique"></a></h2>
+<p>On cherche la position du crayon <span class="math notranslate nohighlight">\(E\)</span> à partir des angles moteurs <span class="math notranslate nohighlight">\((q_1, q_4)\)</span>.</p>
+<ol class="arabic">
+<li><p>Les extrémités des bras se déduisent directement des angles moteurs :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}A_2 = l_1 \begin{pmatrix} \cos q_1 \\ \sin q_1 \end{pmatrix}, \qquad
+A_4 = \begin{pmatrix} l_0 + l_4 \cos q_4 \\ l_4 \sin q_4 \end{pmatrix}\end{split}\]</div>
+</li>
+<li><p><span class="math notranslate nohighlight">\(A_3\)</span> est à la distance <span class="math notranslate nohighlight">\(l_2\)</span> de <span class="math notranslate nohighlight">\(A_2\)</span> et à la distance <span class="math notranslate nohighlight">\(l_3\)</span> de <span class="math notranslate nohighlight">\(A_4\)</span> :
+c’est l’intersection des cercles <span class="math notranslate nohighlight">\((A_2, l_2)\)</span> et <span class="math notranslate nohighlight">\((A_4, l_3)\)</span>.
+On prend le signe <span class="math notranslate nohighlight">\(+\)</span>, qui place <span class="math notranslate nohighlight">\(A_3\)</span> au-dessus de la droite <span class="math notranslate nohighlight">\((A_2A_4)\)</span>.</p></li>
+<li><p>L’angle passif s’en déduit :</p>
+<div class="math notranslate nohighlight">
+\[q_2 = \operatorname{atan2}\left(y_{A_3} - y_{A_2},\; x_{A_3} - x_{A_2}\right)\]</div>
+</li>
+<li><p>Enfin, la pointe du crayon :</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}E = A_3
+  + e_\parallel \begin{pmatrix} \cos q_2 \\ \sin q_2 \end{pmatrix}
+  + e_\perp \begin{pmatrix} -\sin q_2 \\ \cos q_2 \end{pmatrix}\end{split}\]</div>
+</li>
+</ol>
+</section>
+<section id="modele-geometrique-inverse">
+<h2>Modèle géométrique inverse<a class="headerlink" href="#modele-geometrique-inverse" title="Lien vers cette rubrique"></a></h2>
+<p>On cherche les angles moteurs <span class="math notranslate nohighlight">\((q_1, q_4)\)</span> qui amènent le crayon en un point <span class="math notranslate nohighlight">\(E = (x, y)\)</span> donné.</p>
+<p>L’idée clé : <span class="math notranslate nohighlight">\(A_2\)</span>, <span class="math notranslate nohighlight">\(A_3\)</span> et <span class="math notranslate nohighlight">\(E\)</span> appartiennent tous trois à l’avant-bras gauche,
+donc le triangle <span class="math notranslate nohighlight">\(A_2A_3E\)</span> est <strong>rigide</strong>. On peut aller directement de <span class="math notranslate nohighlight">\(A_2\)</span> à <span class="math notranslate nohighlight">\(E\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[L = \sqrt{(l_2 + e_\parallel)^2 + e_\perp^2}, \qquad
+\delta = \operatorname{atan2}\left(e_\perp,\; l_2 + e_\parallel\right)\]</div>
+<p>où <span class="math notranslate nohighlight">\(L = A_2E\)</span> et <span class="math notranslate nohighlight">\(\delta\)</span> est l’angle entre <span class="math notranslate nohighlight">\(\overrightarrow{A_2A_3}\)</span> et <span class="math notranslate nohighlight">\(\overrightarrow{A_2E}\)</span>.</p>
+<ol class="arabic">
+<li><p><strong>Chaîne gauche.</strong> <span class="math notranslate nohighlight">\(A_2\)</span> est à la distance <span class="math notranslate nohighlight">\(l_1\)</span> de <span class="math notranslate nohighlight">\(A_1\)</span> et à la distance <span class="math notranslate nohighlight">\(L\)</span> de <span class="math notranslate nohighlight">\(E\)</span> :
+intersection des cercles <span class="math notranslate nohighlight">\((A_1, l_1)\)</span> et <span class="math notranslate nohighlight">\((E, L)\)</span>, avec le signe <span class="math notranslate nohighlight">\(+\)</span> (coude gauche vers l’extérieur). Alors :</p>
+<div class="math notranslate nohighlight">
+\[q_1 = \operatorname{atan2}\left(y_{A_2},\; x_{A_2}\right)\]</div>
+</li>
+<li><p><strong>Position de</strong> <span class="math notranslate nohighlight">\(A_3\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}q_2 = \operatorname{atan2}\left(y - y_{A_2},\; x - x_{A_2}\right) - \delta, \qquad
+A_3 = A_2 + l_2 \begin{pmatrix} \cos q_2 \\ \sin q_2 \end{pmatrix}\end{split}\]</div>
+</li>
+<li><p><strong>Chaîne droite.</strong> <span class="math notranslate nohighlight">\(A_4\)</span> est à la distance <span class="math notranslate nohighlight">\(l_3\)</span> de <span class="math notranslate nohighlight">\(A_3\)</span> et à la distance <span class="math notranslate nohighlight">\(l_4\)</span> de <span class="math notranslate nohighlight">\(A_5\)</span> :
+intersection des cercles <span class="math notranslate nohighlight">\((A_3, l_3)\)</span> et <span class="math notranslate nohighlight">\((A_5, l_4)\)</span>, avec le signe <span class="math notranslate nohighlight">\(+\)</span> (coude droit vers l’extérieur). Alors :</p>
+<div class="math notranslate nohighlight">
+\[q_4 = \operatorname{atan2}\left(y_{A_4},\; x_{A_4} - l_0\right)\]</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Les deux modèles ont été vérifiés numériquement : pour plusieurs couples <span class="math notranslate nohighlight">\((q_1, q_4)\)</span>,
+appliquer le MGD puis le MGI redonne exactement les angles de départ.</p>
+</div>
+</section>
+<section id="espace-de-travail">
+<h2>Espace de travail<a class="headerlink" href="#espace-de-travail" title="Lien vers cette rubrique"></a></h2>
+<p>Un point <span class="math notranslate nohighlight">\(E\)</span> est atteignable si les deux intersections de cercles du MGI existent, c’est-à-dire si :</p>
+<div class="math notranslate nohighlight">
+\[|l_1 - L| \le \| E - A_1 \| \le l_1 + L
+\qquad \text{et} \qquad
+|l_3 - l_4| \le \| A_3 - A_5 \| \le l_3 + l_4\]</div>
+<p>et si les angles obtenus restent dans les débattements des moteurs.</p>
+</section>
+<section id="singularites">
+<h2>Singularités<a class="headerlink" href="#singularites" title="Lien vers cette rubrique"></a></h2>
+<p>Une singularité apparaît quand une intersection de cercles devient tangente (<span class="math notranslate nohighlight">\(h = 0\)</span>).</p>
+<ul class="simple">
+<li><p><strong>Au bord de l’espace de travail</strong> : <span class="math notranslate nohighlight">\(A_1\)</span>, <span class="math notranslate nohighlight">\(A_2\)</span> et <span class="math notranslate nohighlight">\(E\)</span> sont alignés,
+ou <span class="math notranslate nohighlight">\(A_3\)</span>, <span class="math notranslate nohighlight">\(A_4\)</span> et <span class="math notranslate nohighlight">\(A_5\)</span> sont alignés. Un bras est complètement tendu ou replié,
+et le crayon ne peut plus avancer dans certaines directions.</p></li>
+<li><p><strong>À l’intérieur de l’espace de travail</strong> : <span class="math notranslate nohighlight">\(A_2\)</span>, <span class="math notranslate nohighlight">\(A_3\)</span> et <span class="math notranslate nohighlight">\(A_4\)</span> sont alignés.
+Les deux avant-bras sont dans le prolongement l’un de l’autre : le mécanisme perd sa rigidité
+et peut basculer d’une configuration à l’autre. Cette situation est à éviter dans la zone de dessin.</p></li>
+</ul>
+</section>
+<section id="du-modele-aux-moteurs">
+<h2>Du modèle aux moteurs<a class="headerlink" href="#du-modele-aux-moteurs" title="Lien vers cette rubrique"></a></h2>
+<p>Les angles <span class="math notranslate nohighlight">\(q_1\)</span> et <span class="math notranslate nohighlight">\(q_4\)</span> sont mesurés depuis <span class="math notranslate nohighlight">\(\vec{x}_0\)</span>, alors que chaque moteur
+compte depuis son propre zéro. Pour passer de l’un à l’autre, on utilise, pour chaque moteur :</p>
+<div class="math notranslate nohighlight">
+\[q = s \, \theta_\text{moteur} + q_0
+\qquad \Longleftrightarrow \qquad
+\theta_\text{moteur} = \frac{q - q_0}{s}\]</div>
+<p>où <span class="math notranslate nohighlight">\(q_0\)</span> est l’angle du bras quand le moteur indique zéro, et <span class="math notranslate nohighlight">\(s = \pm 1\)</span> le sens de rotation du moteur.
+Ces deux valeurs sont obtenues par une calibration, en plaçant les bras dans une position de référence connue.</p>
+</section>
+<section id="valeurs-numeriques">
+<h2>Valeurs numériques<a class="headerlink" href="#valeurs-numeriques" title="Lien vers cette rubrique"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Grandeur</p></th>
+<th class="head"><p>Valeur du schéma</p></th>
+<th class="head"><p>Valeur mesurée</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(l_0\)</span></p></td>
+<td><p>137,98 mm</p></td>
+<td><p>à mesurer</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(l_1\)</span></p></td>
+<td><p>80 mm</p></td>
+<td><p>à mesurer</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(l_2\)</span></p></td>
+<td><p>157 mm</p></td>
+<td><p>à mesurer</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(l_3\)</span></p></td>
+<td><p>147 mm</p></td>
+<td><p>à mesurer</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(l_4\)</span></p></td>
+<td><p>79 mm</p></td>
+<td><p>à mesurer</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(e_\parallel\)</span>, <span class="math notranslate nohighlight">\(e_\perp\)</span></p></td>
+<td><p>non donné</p></td>
+<td><p>à mesurer</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="p50s03_urdf.html" class="btn btn-neutral float-left" title="Génération de la description URDF du système 5 barres" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Andreea BUJOR, Zilan DUMAN, Clément LAFROUJI.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

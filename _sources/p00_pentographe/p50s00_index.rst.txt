@@ -45,3 +45,4 @@ Chacune de ces étapes est détaillée dans les pages suivantes.
    p50s01_material_description
    p50s02_mechanical_description
    p50s03_urdf
+   p50s04_kinematics
