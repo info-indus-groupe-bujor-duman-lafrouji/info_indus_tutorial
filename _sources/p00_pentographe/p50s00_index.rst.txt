@@ -46,3 +46,5 @@ Chacune de ces étapes est détaillée dans les pages suivantes.
    p50s02_mechanical_description
    p50s03_urdf
    p50s04_kinematics
+   p50s06_ros2_package
+   p50s07_tests

@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tests du modèle géométrique &mdash; Documentation Pantographe robotisé avec Raspberry Pi 5 et ROS 2 1</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=3ddcd4e1" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=a12a2fe1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=30646c52"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+      <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="prev" title="Package ROS 2 : nœud cinématique du pantographe" href="p50s06_ros2_package.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Pantographe robotisé avec Raspberry Pi 5 et ROS 2
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Sommaire</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="p50s00_index.html">Système 5 barres de dessin robotisé avec Raspberry Pi et ROS 2</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="p50s00_index.html#demarche-du-projet">Démarche du projet</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="p50s01_material_description.html">Description du matériel de la plateforme système 5 barres</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p50s02_mechanical_description.html">Description mécanique de la plateforme système 5 barres</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p50s03_urdf.html">Génération de la description URDF du système 5 barres</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p50s04_kinematics.html">Modèles géométriques direct et inverse du système 5 barres</a></li>
+<li class="toctree-l3"><a class="reference internal" href="p50s06_ros2_package.html">Package ROS 2 : nœud cinématique du pantographe</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Tests du modèle géométrique</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pourquoi-tester">Pourquoi tester</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#organisation-du-code">Organisation du code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strategie-de-test">Stratégie de test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lancer-les-tests">Lancer les tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#quand-relancer-les-tests">Quand relancer les tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fichiers-generes-et-gitignore">Fichiers générés et <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Pantographe robotisé avec Raspberry Pi 5 et ROS 2</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="p50s00_index.html">Système 5 barres de dessin robotisé avec Raspberry Pi et ROS 2</a></li>
+      <li class="breadcrumb-item active">Tests du modèle géométrique</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/p00_pentographe/p50s07_tests.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests-du-modele-geometrique">
+<span id="tests"></span><h1>Tests du modèle géométrique<a class="headerlink" href="#tests-du-modele-geometrique" title="Lien vers cette rubrique"></a></h1>
+<p>Le calcul des angles à partir de la position du crayon est la partie la plus
+sensible du pilotage : une erreur y fausse tout le dessin. Nous l’avons donc
+isolée dans un module Python testable indépendamment de ROS, et couverte par des
+tests automatiques.</p>
+<section id="pourquoi-tester">
+<h2>Pourquoi tester<a class="headerlink" href="#pourquoi-tester" title="Lien vers cette rubrique"></a></h2>
+<p>Les modèles géométriques direct et inverse sont écrits à la main : une faute de
+signe ou de longueur ne se voit pas à la lecture, mais fausse tout le dessin.
+Les tests vérifient automatiquement que le calcul est correct, sans avoir à
+brancher le robot.</p>
+</section>
+<section id="organisation-du-code">
+<h2>Organisation du code<a class="headerlink" href="#organisation-du-code" title="Lien vers cette rubrique"></a></h2>
+<p>Le package <code class="docutils literal notranslate"><span class="pre">pentographe_kinematics</span></code> sépare volontairement deux choses :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">kinematics.py</span></code> : les modèles géométriques direct et inverse, en Python pur,
+<strong>sans aucune dépendance à ROS</strong> ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kinematics_node.py</span></code> : le nœud ROS 2, qui ne fait qu’appeler le module ci-dessus.</p></li>
+</ul>
+<p>Cette séparation permet de tester toutes les mathématiques sans robot, sans
+moteurs et sans ROS installé.</p>
+</section>
+<section id="strategie-de-test">
+<h2>Stratégie de test<a class="headerlink" href="#strategie-de-test" title="Lien vers cette rubrique"></a></h2>
+<p>Les tests se trouvent dans <code class="docutils literal notranslate"><span class="pre">test/test_kinematics.py</span></code> et utilisent <strong>pytest</strong>.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Test</p></th>
+<th class="head"><p>Ce qu’il vérifie</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">test_forward_renvoie_un_point</span></code></p></td>
+<td><p>le modèle direct renvoie bien une position (x, y)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">test_inverse_annule_forward</span></code></p></td>
+<td><p>pour plusieurs configurations, le modèle inverse redonne exactement les
+angles de départ : <span class="math notranslate nohighlight">\(\text{MGI}(\text{MGD}(q_1, q_4)) = (q_1, q_4)\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">test_point_hors_zone_leve_une_erreur</span></code></p></td>
+<td><p>un point hors de l’espace de travail lève bien une exception</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">test_parametres_personnalises</span></code></p></td>
+<td><p>les modèles fonctionnent aussi avec d’autres dimensions (valeurs du cours)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Le test le plus important est le second : il garantit que les deux modèles sont
+cohérents entre eux. C’est une propriété mathématique sûre, indépendante des
+valeurs mesurées.</p>
+</section>
+<section id="lancer-les-tests">
+<h2>Lancer les tests<a class="headerlink" href="#lancer-les-tests" title="Lien vers cette rubrique"></a></h2>
+<p>Depuis le dossier du package :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>ros2_ws/src/pentographe_kinematics
+python3<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>test/<span class="w"> </span>-v
+</pre></div>
+</div>
+<div class="admonition-si-une-erreur-osrf-pycommon-apparait admonition">
+<p class="admonition-title">Si une erreur <code class="docutils literal notranslate"><span class="pre">osrf_pycommon</span></code> apparaît</p>
+<p>Quand ROS 2 est installé, pytest essaie de charger un de ses plugins
+(<code class="docutils literal notranslate"><span class="pre">launch_testing</span></code>) qui peut avoir une dépendance manquante. Nos tests n’en
+ont pas besoin : il suffit de désactiver le chargement automatique des plugins.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">PYTEST_DISABLE_PLUGIN_AUTOLOAD</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>pytest<span class="w"> </span>test/<span class="w"> </span>-v
+</pre></div>
+</div>
+</div>
+<p>Résultat attendu : les sept cas de test passent.</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/tests_pytest.png"><img alt="../_images/tests_pytest.png" src="../_images/tests_pytest.png" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Résultat de l’exécution des tests : 7 passed.</span><a class="headerlink" href="#id1" title="Lien vers cette image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="quand-relancer-les-tests">
+<h2>Quand relancer les tests<a class="headerlink" href="#quand-relancer-les-tests" title="Lien vers cette rubrique"></a></h2>
+<p>Les tests doivent être relancés :</p>
+<ul class="simple">
+<li><p>après toute modification de <code class="docutils literal notranslate"><span class="pre">kinematics.py</span></code> (équations) ;</p></li>
+<li><p>après un changement des dimensions mesurées ;</p></li>
+<li><p>avant de committer et d’ouvrir une pull request.</p></li>
+</ul>
+<p>Si un test échoue, c’est que le calcul a été cassé : il faut corriger avant de
+continuer.</p>
+</section>
+<section id="fichiers-generes-et-gitignore">
+<h2>Fichiers générés et <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code><a class="headerlink" href="#fichiers-generes-et-gitignore" title="Lien vers cette rubrique"></a></h2>
+<p>Certains outils créent des dossiers qui ne doivent <strong>pas</strong> être versionnés :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.pytest_cache/</span></code> : créé par pytest à chaque exécution ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__pycache__/</span></code> : cache Python ;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build/</span></code>, <code class="docutils literal notranslate"><span class="pre">install/</span></code>, <code class="docutils literal notranslate"><span class="pre">log/</span></code> : créés par <code class="docutils literal notranslate"><span class="pre">colcon</span> <span class="pre">build</span></code> (compilation ROS 2).</p></li>
+</ul>
+<p>Ces dossiers sont listés dans le fichier <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> à la racine du dépôt :
+git les ignore donc automatiquement. Si vous ajoutez un outil qui génère de
+nouveaux fichiers temporaires, ajoutez-les à <code class="docutils literal notranslate"><span class="pre">.gitignore</span></code> plutôt que de les
+committer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>À compléter au prochain accès au robot : les tests du nœud ROS 2 lui-même
+(vérifier qu’il publie bien sur <code class="docutils literal notranslate"><span class="pre">joint_commands</span></code> quand il reçoit un point
+sur <code class="docutils literal notranslate"><span class="pre">pen_target</span></code>), à exécuter une fois ROS disponible.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="p50s06_ros2_package.html" class="btn btn-neutral float-left" title="Package ROS 2 : nœud cinématique du pantographe" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Andreea BUJOR, Zilan DUMAN, Clément LAFROUJI.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
