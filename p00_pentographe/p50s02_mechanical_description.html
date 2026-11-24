@@ -24,6 +24,7 @@
       <script src="../_static/copybutton.js?v=30646c52"></script>
       <script src="../_static/translations.js?v=e6b791cb"></script>
       <script src="../_static/design-tabs.js?v=f930bc37"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Recherche" href="../search.html" />
@@ -56,9 +57,9 @@
 <li class="toctree-l2 current"><a class="reference internal" href="p50s00_index.html#demarche-du-projet">Démarche du projet</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="p50s01_material_description.html">Description du matériel de la plateforme système 5 barres</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Description mécanique de la plateforme système 5 barres</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#geometrie">Géométrie</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#cinematique">Cinématique</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#dynamique">Dynamique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dimensions-mesurees">Dimensions mesurées</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#position-du-crayon">Position du crayon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#liaisons">Liaisons</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="p50s03_urdf.html">Génération de la description URDF du système 5 barres</a></li>
@@ -101,21 +102,96 @@
 <p>Le système 5 barres est une chaîne cinématique fermée et plane. Deux bras sont
 entraînés chacun par un moteur fixé sur le bâti ; leurs extrémités sont reliées
 par deux avant-bras, qui se rejoignent au niveau de l’organe terminal porte-crayon.
-En faisant tourner les deux moteurs, on déplace donc le crayon dans le plan de la feuille.</p>
+En faisant tourner les deux moteurs, on déplace le crayon dans le plan de la feuille.</p>
 <figure class="align-center" id="id1">
-<img alt="../_images/schema_cinematique.svg" src="../_images/schema_cinematique.svg" />
+<a class="reference internal image-reference" href="../_images/schema_cinematique.svg"><img alt="../_images/schema_cinematique.svg" src="../_images/schema_cinematique.svg" style="width: 80%;" />
+</a>
 <figcaption>
-<p><span class="caption-text">Schéma cinématique du système 5 barres.</span><a class="headerlink" href="#id1" title="Lien vers cette image"></a></p>
+<p><span class="caption-text">Schéma cinématique du système 5 barres (source : cours de M. YGUEL).</span><a class="headerlink" href="#id1" title="Lien vers cette image"></a></p>
 </figcaption>
 </figure>
-<section id="geometrie">
-<h2>Géométrie<a class="headerlink" href="#geometrie" title="Lien vers cette rubrique"></a></h2>
+<p>Les deux moteurs sont placés en <span class="math notranslate nohighlight">\(A_1\)</span> et <span class="math notranslate nohighlight">\(A_5\)</span> : ce sont les
+<strong>articulations actives</strong>. Les articulations <span class="math notranslate nohighlight">\(A_2\)</span>, <span class="math notranslate nohighlight">\(A_3\)</span> et
+<span class="math notranslate nohighlight">\(A_4\)</span> sont <strong>passives</strong>.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/schema_mesures.jpg"><img alt="../_images/schema_mesures.jpg" src="../_images/schema_mesures.jpg" style="width: 90%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">La plateforme réelle, annotée avec nos notations et nos dimensions mesurées.</span><a class="headerlink" href="#id2" title="Lien vers cette image"></a></p>
+</figcaption>
+</figure>
+<section id="dimensions-mesurees">
+<h2>Dimensions mesurées<a class="headerlink" href="#dimensions-mesurees" title="Lien vers cette rubrique"></a></h2>
+<p>Nous avons mesuré les longueurs des barres directement sur la plateforme, entre
+les centres des pivots. Elles diffèrent légèrement des valeurs du modèle 3D du
+cours : ce sont nos valeurs mesurées qui servent de référence pour le pilotage du
+robot réel.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 16.7%" />
+<col style="width: 38.9%" />
+<col style="width: 22.2%" />
+<col style="width: 22.2%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbole</p></th>
+<th class="head"><p>Grandeur</p></th>
+<th class="head"><p>Valeur mesurée</p></th>
+<th class="head"><p>Valeur du modèle 3D</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(l_0\)</span></p></td>
+<td><p>entraxe des moteurs <span class="math notranslate nohighlight">\(A_1A_5\)</span></p></td>
+<td><p>137 mm</p></td>
+<td><p>137,98 mm</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(l_1\)</span></p></td>
+<td><p>bras gauche <span class="math notranslate nohighlight">\(A_1A_2\)</span></p></td>
+<td><p>86 mm</p></td>
+<td><p>80 mm</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(l_2\)</span></p></td>
+<td><p>avant-bras gauche <span class="math notranslate nohighlight">\(A_2A_3\)</span></p></td>
+<td><p>150 mm</p></td>
+<td><p>157 mm</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(l_3\)</span></p></td>
+<td><p>avant-bras droit <span class="math notranslate nohighlight">\(A_3A_4\)</span></p></td>
+<td><p>150 mm</p></td>
+<td><p>147 mm</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(l_4\)</span></p></td>
+<td><p>bras droit <span class="math notranslate nohighlight">\(A_4A_5\)</span></p></td>
+<td><p>85 mm</p></td>
+<td><p>79 mm</p></td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="cinematique">
-<h2>Cinématique<a class="headerlink" href="#cinematique" title="Lien vers cette rubrique"></a></h2>
+<section id="position-du-crayon">
+<h2>Position du crayon<a class="headerlink" href="#position-du-crayon" title="Lien vers cette rubrique"></a></h2>
+<p>Le porte-crayon est fixé sur l’avant-bras gauche (<em>link2</em>). Le crayon n’est donc
+pas exactement en <span class="math notranslate nohighlight">\(A_3\)</span>. Mesuré depuis <span class="math notranslate nohighlight">\(A_2\)</span>, le long de
+<span class="math notranslate nohighlight">\(\overrightarrow{A_2A_3}\)</span>, il se trouve à 134 mm, et il est décalé
+latéralement de 26 mm. Par rapport à <span class="math notranslate nohighlight">\(A_3\)</span>, cela donne :</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(e_\parallel = 134 - l_2 = -16\)</span> mm (le crayon est en deçà de <span class="math notranslate nohighlight">\(A_3\)</span>) ;</p></li>
+<li><p><span class="math notranslate nohighlight">\(e_\perp = 26\)</span> mm.</p></li>
+</ul>
+<p>Ces valeurs sont utilisées dans les <a class="reference internal" href="p50s04_kinematics.html#kinematics"><span class="std std-ref">modèles géométriques</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Reste à compléter au prochain accès au robot : la hauteur de la pointe du
+crayon, la présence éventuelle d’un mécanisme de levée du crayon, les butées
+mécaniques des deux bras et la position de la zone de dessin dans le repère.</p>
+</div>
 </section>
-<section id="dynamique">
-<h2>Dynamique<a class="headerlink" href="#dynamique" title="Lien vers cette rubrique"></a></h2>
+<section id="liaisons">
+<h2>Liaisons<a class="headerlink" href="#liaisons" title="Lien vers cette rubrique"></a></h2>
+<p>Toutes les liaisons entre les barres sont des liaisons <strong>pivot</strong> d’axe
+perpendiculaire au plan de travail. Le mécanisme possède deux degrés de liberté,
+correspondant aux deux moteurs.</p>
 </section>
 </section>
 
