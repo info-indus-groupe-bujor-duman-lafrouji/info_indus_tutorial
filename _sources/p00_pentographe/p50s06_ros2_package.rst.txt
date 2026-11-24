@@ -1,47 +1,90 @@
 ##################################################
- Package ROS 2 : nœud cinématique du pantographe
+ Package ROS 2 : nœuds cinématiques du pantographe
 ##################################################
 
-Le package ``pentographe_kinematics`` traduit une position voulue du crayon en
-angles pour les deux moteurs, en appliquant le :ref:`modèle géométrique inverse <kinematics>`.
+Le package ``pentographe_kinematics`` calcule les angles du pantographe à partir
+de la position du crayon, en appliquant les :ref:`modèles géométriques <kinematics>`.
+Les équations sont écrites une seule fois dans ``kinematics.py`` (Python pur,
+sans ROS) ; les deux nœuds du package ne font que les appeler.
 
-Rôle et interface
-=================
-
-Le nœud ne commande pas directement les moteurs : il calcule les angles, qu'un
-second nœud (le pilote des moteurs) se charge d'envoyer au matériel.
-
-.. code-block:: text
-
-   position (x, y)                angles (q1, q4)              moteurs
-   ----------------> [ nœud cinématique ] ----------------> [ pilote ] --> AX-12A
+Les deux nœuds
+==============
 
 .. list-table::
    :header-rows: 1
-   :widths: 20 25 25 30
+   :widths: 25 37 38
 
-   * - Sens
-     - Topic
-     - Type de message
-     - Contenu
-   * - entrée
-     - ``pen_target``
-     - ``geometry_msgs/Point``
-     - position du crayon en **mètres** (z ignoré)
-   * - sortie
+   * -
+     - ``kinematics_node``
+     - ``rviz_joint_state_node``
+   * - Pour
+     - le pilotage des moteurs
+     - la simulation RViz
+   * - Entrée
+     - ``pen_target`` (x, y)
+     - ``pen_target`` (x, y)
+   * - Publie
+     - 2 angles moteurs (q1, q4)
+     - 4 orientations absolues (theta1..theta4)
+   * - Topic de sortie
      - ``joint_commands``
-     - ``sensor_msgs/JointState``
-     - angles ``q1`` et ``q4`` en **radians**, mesurés depuis l'axe x0
+     - ``pantograph_angles``
+   * - Dimensions
+     - valeurs mesurées
+     - valeurs du modèle Creo
 
-Les angles produits sont absolus (depuis x0) : leur conversion en consignes
-moteur (calibration) est décrite plus bas.
+Dans les deux cas, la position du crayon est donnée en **mètres** sur le topic
+``pen_target`` (type ``geometry_msgs/Point``, z ignoré).
+
+Nœud de pilotage (``kinematics_node``)
+======================================
+
+Il applique le modèle géométrique inverse et publie les deux angles moteurs, en
+radians, sur ``joint_commands`` (type ``sensor_msgs/JointState``, noms ``q1`` et
+``q4``). Ces angles, absolus (mesurés depuis x0), sont ensuite convertis en
+consignes moteur par le nœud pilote (voir la calibration plus bas).
+
+Nœud de simulation (``rviz_joint_state_node``)
+==============================================
+
+Pour afficher le mécanisme complet dans RViz, il faut aussi les angles des deux
+avant-bras. Ce nœud publie donc les **quatre orientations absolues** des barres,
+en radians, sur ``pantograph_angles`` (type ``sensor_msgs/JointState``) :
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 25 55
+
+   * - Angle
+     - Barre
+     - Orientation de
+   * - ``theta1``
+     - link1 (:math:`A_1 \to A_2`)
+     - bras gauche (moteur)
+   * - ``theta2``
+     - link2 (:math:`A_2 \to A_3`)
+     - avant-bras gauche
+   * - ``theta3``
+     - link3 (:math:`A_4 \to A_3`)
+     - avant-bras droit
+   * - ``theta4``
+     - link4 (:math:`A_5 \to A_4`)
+     - bras droit (moteur)
+
+Fournir les quatre angles évite au nœud de visualisation (côté URDF) de
+recalculer le point de fermeture :math:`A_3` : les équations ne sont écrites
+qu'une seule fois. La conversion de ces angles vers le repère de l'URDF, de la
+forme :math:`\alpha_i - \theta_i`, dépend de l'URDF et reste réalisée du côté de
+sa description.
+
+Comme les meshes de l'URDF sont exportés du modèle Creo, ce nœud utilise par
+défaut les dimensions du modèle Creo (fichier ``config/pentographe_creo.yaml``),
+et non les valeurs mesurées sur le robot réel.
 
 Prise en main (pas à pas)
 =========================
 
-Pour utiliser le package à partir de zéro :
-
-#. **Compiler** le package, depuis la racine de l'espace de travail ROS 2 :
+#. **Compiler**, depuis la racine de l'espace de travail ROS 2 :
 
    .. code-block:: bash
 
@@ -54,38 +97,33 @@ Pour utiliser le package à partir de zéro :
 
       source install/setup.bash
 
-#. *(optionnel)* **Ajuster les dimensions** dans
-   ``src/pentographe_kinematics/config/pentographe_kinematics.yaml`` si elles ont
-   changé (remesure, autre robot).
-
-#. **Lancer** le nœud :
+#. **Lancer** le nœud voulu :
 
    .. code-block:: bash
 
-      ros2 launch pentographe_kinematics kinematics.launch.py
+      ros2 launch pentographe_kinematics kinematics.launch.py        # pilotage
+      ros2 launch pentographe_kinematics rviz_joint_state.launch.py  # simulation RViz
 
-#. Dans **un autre terminal** (où l'on a aussi fait ``source install/setup.bash``),
-   **envoyer une position** du crayon (ici x = 0,05 m, y = 0,18 m) :
-
-   .. code-block:: bash
-
-      ros2 topic pub --once /pen_target geometry_msgs/Point "{x: 0.05, y: 0.18, z: 0.0}"
-
-#. **Lire les angles** calculés :
+#. Dans un autre terminal, **envoyer une position** du crayon :
 
    .. code-block:: bash
 
-      ros2 topic echo /joint_commands
+      ros2 topic pub --once /pen_target geometry_msgs/Point "{x: 0.02, y: 0.17, z: 0.0}"
 
-#. **Pour piloter le vrai robot** : remplir ``config/calibration.yaml`` (voir plus
-   bas) et lancer le nœud pilote, qui lit ``joint_commands`` et commande les moteurs.
+#. **Lire la sortie** :
+
+   .. code-block:: bash
+
+      ros2 topic echo /joint_commands      # angles moteurs (pilotage)
+      ros2 topic echo /pantograph_angles   # 4 orientations (RViz)
 
 Réglage des dimensions
 ======================
 
-Toutes les dimensions sont dans le fichier ``config/pentographe_kinematics.yaml``.
-Pour les changer, il suffit d'éditer ce fichier : **aucune modification du code
-n'est nécessaire**.
+Les dimensions sont dans des fichiers YAML, modifiables **sans toucher au code** :
+
+* ``config/pentographe_kinematics.yaml`` : valeurs mesurées (pilotage) ;
+* ``config/pentographe_creo.yaml`` : valeurs du modèle Creo (simulation RViz).
 
 .. code-block:: yaml
 
@@ -102,9 +140,9 @@ n'est nécessaire**.
 Calibration (du modèle aux moteurs)
 ===================================
 
-Le nœud produit des angles :math:`q_1` et :math:`q_4` mesurés depuis l'axe x0.
-Un moteur AX-12A, lui, attend un entier de 0 à 1023 compté depuis son propre
-zéro. Le pilote des moteurs doit donc appliquer, pour chaque moteur :
+Le nœud de pilotage produit des angles :math:`q_1` et :math:`q_4` mesurés depuis
+l'axe x0. Un moteur AX-12A, lui, attend un entier de 0 à 1023 compté depuis son
+propre zéro. Le pilote des moteurs applique donc, pour chaque moteur :
 
 .. math::
 
@@ -113,14 +151,7 @@ zéro. Le pilote des moteurs doit donc appliquer, pour chaque moteur :
    \text{position} = \operatorname{round}\!\left(\frac{\theta_\text{moteur}}{300} \times 1023\right)
 
 où :math:`q_0` est l'angle du bras quand le moteur indique zéro et :math:`s = \pm 1`
-le sens de rotation. Ces deux valeurs s'obtiennent par une calibration :
-
-#. placer les bras dans une **position de référence connue** (par exemple bras gauche vertical) ;
-#. lire la valeur renvoyée par chaque moteur dans cette position ;
-#. en déduire :math:`q_0` et :math:`s`.
-
-Comme pour les dimensions, ces valeurs se règlent dans un fichier YAML dédié,
-``config/calibration.yaml``, sans toucher au code :
+le sens de rotation. Ces valeurs se règlent dans ``config/calibration.yaml`` :
 
 .. code-block:: yaml
 
@@ -139,32 +170,28 @@ Comme pour les dimensions, ces valeurs se règlent dans un fichier YAML dédié,
 ------------------------------------------
 
 Sans calibration, on connaît la *forme* du mouvement, mais pas sa *position* : le
-dessin sort décalé, tourné ou en miroir par rapport à ce qui était prévu. La
-calibration fixe deux choses :
+dessin sort décalé, tourné ou en miroir. La calibration fixe deux choses :
 
-* :math:`q_0` **recale l'origine** : il garantit que « crayon au point (x, y) »
-  dans le modèle correspond bien au même point sur la feuille ;
-* :math:`s` **fixe le sens** : il évite que le dessin parte à l'envers ou en miroir.
-
-C'est donc elle qui relie le repère du modèle au repère réel de la feuille.
+* :math:`q_0` **recale l'origine** : « crayon au point (x, y) » dans le modèle
+  correspond bien au même point sur la feuille ;
+* :math:`s` **fixe le sens** : le dessin ne part pas à l'envers ou en miroir.
 
 Précision du dessin
 ===================
 
-La résolution de l'AX-12A est de :math:`300° / 1024 \approx 0{,}29°` par pas : le
-moteur ne peut pas se placer entre deux pas. Comme le crayon est au bout d'un bras
-d'environ 200 mm, un pas déplace la pointe d'environ :
+La résolution de l'AX-12A est de :math:`300° / 1024 \approx 0{,}29°` par pas. Comme
+le crayon est au bout d'un bras d'environ 200 mm, un pas déplace la pointe de :
 
 .. math::
 
    200 \text{ mm} \times 0{,}29° \times \frac{\pi}{180} \approx 1 \text{ mm}
 
 Le crayon ne peut donc pas être positionné plus finement que de l'ordre du
-millimètre. Cette limite, ajoutée à la qualité de la calibration, détermine la
+millimètre. Cette limite, avec la qualité de la calibration, détermine la
 précision des dessins réalisables.
 
 .. note::
 
    À compléter au prochain accès au robot : les valeurs de calibration
    (:math:`q_0`, :math:`s`) dans ``config/calibration.yaml`` et les identifiants
-   des moteurs, à relever une fois le Raspberry Pi accessible.
+   des moteurs.
